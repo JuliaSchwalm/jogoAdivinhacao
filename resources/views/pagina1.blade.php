@@ -9,7 +9,7 @@
 
 <body>
     <h1>Formulário</h1>
-    <form action="{{ route('processarFormulario') }}" method="post">
+    <form action="{{ route('formulario') }}" method="post">
         @csrf
         <label for="nome">Nome:</label>
         <input type="text" name="nome" required>
