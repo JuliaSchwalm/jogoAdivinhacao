@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\GameController;
 
-Route::get('/', [GameController::class, 'form']);
-Route::post('/formulario', [GameController::class, 'form'])->name('formulario');
-Route::get('/pagina2/{nome}/{idade}', [GameController::class, 'showPagina2'])->name('pagina2');
-Route::get('/pagina3/{nome}/{idade}', [GameController::class, 'showPagina3'])->name('pagina3');
+Route::get('/', function () { return view('index');});
+Route::post('/formulario', 'App\Http\Controllers\Controlador@form')->name('formulario');
+Route::get('/pagina2/{nome}', 'App\Http\Controllers\Controlador@pagina2');
+Route::post ('/pagina2', 'App\Http\Controllers\Controlador@formNumero' )->name('formNumero');
+
