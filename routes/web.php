@@ -20,5 +20,7 @@ Route::post('/formulario', 'App\Http\Controllers\Controlador@form')->name('formu
 Route::get('/pagina2/{nome}', 'App\Http\Controllers\Controlador@pagina2');
 //Route::post ('/pagina2', 'App\Http\Controllers\Controlador@formNumero' )->name('formNumero');
 Route::get('/pagina3/{nome}/{idade}', 'App\Http\Controllers\Controlador@pagina3')->name('pagina3');
+Route::get('/pagina4', 'App\Http\Controllers\Controlador@pagina4')->name('pagina4');
+
 
 

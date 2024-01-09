@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+
+use App\Models\Jogador;
+
 class GameController extends Controller
 {
     public function index()
@@ -15,8 +18,6 @@ class GameController extends Controller
         $nome = $request->input('nome');
         $idade = $request->input('idade');
         $dificuldade = $request->input('dificuldade');
-        Session::put('nome', $nome);
-        Session::put('idade', $idade);
 
         if ($dificuldade == 'facil') {
             return redirect()->route('pagina2', compact('nome'));
@@ -31,13 +32,21 @@ class GameController extends Controller
     public function formNumero(Request $request)
     {
         $nome = $request->input('nome');
+        $tentativas = Session::get('tentativas', 0);
         $valor_correto = $this->calcularValorCorreto($nome);
+
+        // Incrementa o número de tentativas
+        $tentativas++;
+
+        // Salva o novo valor da contagem de tentativas na sessão
+        Session::put('tentativas', $tentativas);
 
         // Lógica para verificar o chute do jogador e fornecer as dicas
         $chute = $request->input('chute');
         $dica = $this->calcularDica($chute, $valor_correto);
 
-        return view('pagina2', compact('nome', 'dica'));
+
+        return view('pagina2', compact('nome', 'dica', 'tentativas'));
     }
 
     private function calcularValorCorreto($nome)
@@ -68,6 +77,7 @@ class GameController extends Controller
     {
         // Gerar o número correto baseado na multiplicação dos números do nome
         $numeroCorreto = $this->calcularNumeroCorreto($nome, $idade);
+
         return view('pagina3', compact('nome', 'idade', 'numeroCorreto'));
     }
 
@@ -84,4 +94,29 @@ class GameController extends Controller
         }
         return $numeroCorreto;
     }
+
+
+    public function pagina4(Request $request)
+    {
+        // Obtenha o número de tentativas a partir dos parâmetros da URL
+        $tentativas = $request->query('tentativas', 0);
+        $usuarioAtual = [
+            'nome' => Session::get('nome'),
+            'idade' => Session::get('idade'),
+            'tentativas' => Session::get('tentativas', 0),
+        ];
+
+        // Salvar informações no banco de dados
+        Jogador::create([
+            'nome' => $usuarioAtual['nome'],
+            'idade' => $usuarioAtual['idade'],
+            'tentativas' => $usuarioAtual['tentativas'],
+        ]);
+
+        // Obter lista de jogadores ordenada por tentativas
+        $usuarios = Jogador::orderBy('tentativas')->get();
+
+        return view('pagina4', compact('usuarios', 'usuarioAtual'));
+    }
+
 }
