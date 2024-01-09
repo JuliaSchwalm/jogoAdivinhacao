@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,8 @@
             margin: auto;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
@@ -24,9 +26,12 @@
 
         .usuario-atual {
             background-color: #f39c12;
+            font-weight: bold;
+            /* Adiciona negrito para o usuário atual */
         }
     </style>
 </head>
+
 <body>
     <h1>Página 4</h1>
 
@@ -38,14 +43,18 @@
             <th>Idade</th>
             <th>Tentativas</th>
         </tr>
-        @foreach ($usuarios as $index => $usuario)
-            <tr class="{{ $usuario['nome'] === $usuarioAtual['nome'] ? 'usuario-atual' : '' }}">
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $usuario['nome'] }}</td>
-                <td>{{ $usuario['idade'] }}</td>
-                <td>{{ $usuario['tentativas'] }}</td>
-            </tr>
-        @endforeach
+        @foreach (Session::get('usuarios', []) as $index => $usuario)
+    <tr class="{{ $usuario['nome'] === $usuarioAtual['nome'] ? 'usuario-atual' : '' }}">
+        <td>{{ $index + 1 }}</td>
+        <td>{{ $usuario['nome'] }}</td>
+        <td>{{ $usuario['idade'] }}</td>
+        <td>{{ $usuario['tentativas'] }}</td>
+    </tr>
+@endforeach
+
+
+
     </table>
 </body>
+
 </html>

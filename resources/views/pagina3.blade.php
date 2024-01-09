@@ -67,11 +67,24 @@
         }
     </script>
 
-    <form>
-        <label for="tentativa">Sua Tentativa:</label>
-        <input type="number" id="tentativa" required>
-        <button type="button" onclick="verificarTentativa()">Verificar</button>
-    </form>
+   <!-- ... restante do código ... -->
+<script>
+    var numeroCorreto = {{ $numeroCorreto }};
+    var nome = '{{ $nome }}';
+    var idade = {{ $idade }};
+</script>
+
+<form method="post" action="{{ route('verificarTentativa') }}">
+    @csrf
+    <input type="hidden" name="numeroCorreto" value="{{ $numeroCorreto }}">
+    <input type="hidden" name="nome" value="{{ $nome }}">
+    <input type="hidden" name="idade" value="{{ $idade }}">
+    <label for="tentativa">Sua Tentativa:</label>
+    <input type="number" name="tentativa" id="tentativa" required>
+    <button type="submit">Verificar</button>
+</form>
+
+<!-- ... restante do código ... -->
 
     <p id="contagemTentativas">Tentativas: 0</p>
 
