@@ -15,6 +15,8 @@ class GameController extends Controller
         $nome = $request->input('nome');
         $idade = $request->input('idade');
         $dificuldade = $request->input('dificuldade');
+        Session::put('nome', $nome);
+        Session::put('idade', $idade);
 
         if ($dificuldade == 'facil') {
             return redirect()->route('pagina2', compact('nome'));
@@ -62,4 +64,24 @@ class GameController extends Controller
         }
     }
 
+    public function pagina3($nome, $idade)
+    {
+        // Gerar o número correto baseado na multiplicação dos números do nome
+        $numeroCorreto = $this->calcularNumeroCorreto($nome, $idade);
+        return view('pagina3', compact('nome', 'idade', 'numeroCorreto'));
+    }
+
+    private function calcularNumeroCorreto($nome, $idade)
+    {
+        // Calcula o número correto multiplicando os caracteres do nome
+        $numeroCorreto = 1;
+        for ($i = 0; $i < strlen($nome); $i++) {
+            $numeroCorreto *= ord($nome[$i]);
+        }
+        // Se o número for maior que 100, subtrai pela idade até ser menor que 100
+        while ($numeroCorreto > 100) {
+            $numeroCorreto -= $idade;
+        }
+        return $numeroCorreto;
+    }
 }
