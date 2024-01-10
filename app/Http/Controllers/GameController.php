@@ -148,8 +148,8 @@ class GameController extends Controller
 
     public function pagina4(Request $request)
     {
-        // Obtenha as informações do jogador atual
-        $usuarioAtual = session()->get('usuarioAtual', []);
+        // Obter informações da URL
+        $nomeNaURL = $request->query('nome', '');
     
         // Obter a dificuldade do jogador atual diretamente da sessão
         $dificuldade = session('dificuldade', '');
@@ -159,11 +159,8 @@ class GameController extends Controller
             ->orderBy('tentativas')
             ->get();
     
-        // Verificar se a lista de usuários não está vazia antes de acessar o primeiro elemento
-        if (!$usuarios->isEmpty()) {
-            // Se não estiver vazia, obtenha o primeiro usuário da lista
-            $usuarioAtual = $usuarios->first();
-        }
+        // Encontrar o usuário atual na lista com base no nome da URL
+        $usuarioAtual = $usuarios->firstWhere('nome', $nomeNaURL);
     
         // Armazenar a lista de usuários na sessão
         session()->put('usuarios', $usuarios);
@@ -173,6 +170,7 @@ class GameController extends Controller
     
         return view('pagina4', compact('usuarioAtual'));
     }
+    
     
     
     

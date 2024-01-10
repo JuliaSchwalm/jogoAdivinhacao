@@ -94,7 +94,7 @@ function enviarTentativaAssincrona(tentativa, tempoDecorrido) {
 
         // Verificar se o jogador acertou e redirecionar para a Página 4
         if (data.acertou) {
-            window.location.href = '/pagina4';
+         window.location.href = '/pagina4?nome={{ $nome }}&idade={{ $idade }}';
         }
     })
     .catch(error => console.error('Erro ao enviar tentativa:', error));
