@@ -44,15 +44,15 @@
             <th>Tentativas</th>
         </tr>
         @foreach (Session::get('usuarios', []) as $index => $usuario)
-    <tr class="{{ $usuario['nome'] === $usuarioAtual['nome'] ? 'usuario-atual' : '' }}">
-        <td>{{ $index + 1 }}</td>
-        <td>{{ $usuario['nome'] }}</td>
-        <td>{{ $usuario['idade'] }}</td>
-        <td>{{ $usuario['tentativas'] }}</td>
-    </tr>
+    @if ($usuario['dificuldade'] === session('dificuldade'))
+        <tr class="{{ $usuario['nome'] === $usuarioAtual['nome'] ? 'usuario-atual' : '' }}">
+            <td>{{ $index + 1 }}</td>
+            <td>{{ $usuario['nome'] }}</td>
+            <td>{{ $usuario['idade'] }}</td>
+            <td>{{ $usuario['tentativas'] }}</td>
+        </tr>
+    @endif
 @endforeach
-
-
 
     </table>
 </body>

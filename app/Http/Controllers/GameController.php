@@ -20,6 +20,10 @@ class GameController extends Controller
         $nome = $request->input('nome');
         $idade = $request->input('idade');
         $dificuldade = $request->input('dificuldade');
+    
+        // Salva a dificuldade do jogo na sessão
+        session(['dificuldade' => $dificuldade]);
+    
         // Salva no banco apenas na página de vitória (Página 4)
         Jogador::create([
             'nome' => $nome,
@@ -27,18 +31,18 @@ class GameController extends Controller
             'tentativas' => 0,
             'dificuldade' => $dificuldade, // Inicializa com 0 tentativas
         ]);
-
+    
         if ($dificuldade == 'facil') {
             return view('pagina2', compact('nome', 'idade'));
         } elseif ($dificuldade == 'dificil') {
             // Gerar o número correto baseado na multiplicação dos números do nome
             $numeroCorreto = $this->calcularNumeroCorreto($nome, $idade);
             return view('pagina3', compact('nome', 'idade', 'numeroCorreto'));
-
         } else {
             echo "<script>alert ('Nível de dificuldade não reconhecido')</script>";
         }
     }
+    
 
     public function formNumero(Request $request)
     {
@@ -116,7 +120,7 @@ class GameController extends Controller
             // Salvar informações no banco de dados
             Jogador::where('nome', $nome)
                 ->where('idade', $idade)
-                ->update(['tempo_decorrido' => $tempoDecorrido, 'acertou' => true]);
+                ->update(['tentativas' => $tempoDecorrido]);
         
             return response()->json(['acertou' => true]);
         } else {
@@ -142,26 +146,36 @@ class GameController extends Controller
     }
 
 
-
     public function pagina4(Request $request)
     {
         // Obtenha as informações do jogador atual
         $usuarioAtual = session()->get('usuarioAtual', []);
-
-        // Obter lista de jogadores ordenada por tentativas
-        $usuarios = Jogador::orderBy('tentativas')->get();
-
+    
+        // Obter a dificuldade do jogador atual diretamente da sessão
+        $dificuldade = session('dificuldade', '');
+    
+        // Obter lista de jogadores filtrada por dificuldade e ordenada por tentativas
+        $usuarios = Jogador::where('dificuldade', $dificuldade)
+            ->orderBy('tentativas')
+            ->get();
+    
+        // Verificar se a lista de usuários não está vazia antes de acessar o primeiro elemento
+        if (!$usuarios->isEmpty()) {
+            // Se não estiver vazia, obtenha o primeiro usuário da lista
+            $usuarioAtual = $usuarios->first();
+        }
+    
         // Armazenar a lista de usuários na sessão
         session()->put('usuarios', $usuarios);
-
+    
         // Limpar a sessão de tentativas
         session()->forget('tentativas');
-
+    
         return view('pagina4', compact('usuarioAtual'));
     }
-
-
-
+    
+    
+    
 
 
 
