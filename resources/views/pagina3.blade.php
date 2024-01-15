@@ -8,15 +8,60 @@
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column; /* Adicionado para melhorar o alinhamento */
+            flex-direction: column;
             height: 100vh;
             background-color: #3498db;
-            /* Cor inicial (azul) */
+            color: #fff;
             transition: background-color 0.5s ease;
+        }
+
+        p {
+            margin: 5px 0;
+            font-size: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            font-size: 18px;
+        }
+
+        input {
+            margin: 10px 0;
+            padding: 8px;
+            font-size: 16px;
+            box-sizing: border-box; /* Garante que o padding não afeta o tamanho total */
+            width: calc(100% - 16px); /* Leva em consideração o padding para manter o tamanho total igual ao do botão */
+        }
+
+        button {
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 12px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #c0392b;
+        }
+
+        #contagemTempo {
+            margin-top: 20px;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -39,7 +84,7 @@
     <p id="contagemTempo">Tempo decorrido: 0 segundos</p>
 
     <script>
-  console.log("Numero Correto:", {{ $numeroCorreto }});
+        console.log("Numero Correto:", {{ $numeroCorreto }});
 var numeroCorreto = {{ $numeroCorreto }};
 var inicioJogo = Date.now(); // Armazena o tempo de início do jogo
 
@@ -99,7 +144,6 @@ function enviarTentativaAssincrona(tentativa, tempoDecorrido) {
     })
     .catch(error => console.error('Erro ao enviar tentativa:', error));
 }
-
 
     </script>
 </body>
